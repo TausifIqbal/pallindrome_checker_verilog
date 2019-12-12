@@ -1,0 +1,26 @@
+`timescale 1ns / 1ps
+module pallindrome_checker(input [3:0] sin, input clk, input load,output reg led );
+reg [3:0] out;
+reg [2:0] i;
+initial i = -1;
+always @(posedge clk)
+begin
+   if(load == 1)
+     if(i != 4)
+     begin
+      i <= i+1;
+      out[3] <= out[2];
+      out[2] <= out[1];
+      out[1] <= out[0];
+      out[0] <= sin[i];
+    end
+  else
+    led = ~((out[3] ^ out[0]) | (out[2] ^ out[1]));
+  else if(load == 0)
+  begin
+    led = 0;
+    i = 0;
+  end
+ end
+
+endmodule
